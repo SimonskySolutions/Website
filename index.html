@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simonsky Solutions — Enterprise Software & Digital Transformation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green:      #4d6717;
+            --dark-green: #394810;
+            --light-1:    #f2ffcd;
+            --light-2:    #e5ff9c;
+            --white:      #ffffff;
+            --text-dark:  #1a1f0a;
+            --text-mid:   #3a4a1a;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ───────────────────────────────────────────── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1.75rem 5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(30, 40, 8, 0.97);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            padding: 1.1rem 5rem;
+            box-shadow: 0 4px 40px rgba(0,0,0,0.35);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .nav-logo svg {
+            height: 46px;
+            width: auto;
+            display: block;
+            transition: height 0.4s ease;
+        }
+        nav.scrolled .nav-logo svg {
+            height: 36px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(242,255,205,0.75);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--light-2); }
+
+        .nav-cta {
+            background: var(--light-2) !important;
+            color: var(--dark-green) !important;
+            padding: 0.6rem 1.5rem;
+            border-radius: 2px;
+            font-weight: 700 !important;
+        }
+        .nav-cta:hover { background: var(--white) !important; }
+
+        /* Hamburger */
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .nav-hamburger span {
+            width: 24px;
+            height: 2px;
+            background: var(--light-1);
+            transition: all 0.3s;
+        }
+
+        /* ── HERO ──────────────────────────────────────────── */
+        #home {
+            min-height: 100vh;
+            background: var(--dark-green);
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 90% 70% at 65% 35%, rgba(77,103,23,0.65) 0%, transparent 65%),
+                radial-gradient(ellipse 55% 90% at 5% 90%, rgba(229,255,156,0.07) 0%, transparent 55%),
+                radial-gradient(ellipse 40% 40% at 95% 10%, rgba(242,255,205,0.04) 0%, transparent 50%);
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(242,255,205,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(242,255,205,0.035) 1px, transparent 1px);
+            background-size: 70px 70px;
+        }
+
+        /* Animated orb */
+        .hero-orb {
+            position: absolute;
+            right: -10%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(77,103,23,0.35) 0%, transparent 70%);
+            animation: orbPulse 6s ease-in-out infinite;
+        }
+
+        @keyframes orbPulse {
+            0%, 100% { transform: translateY(-50%) scale(1); opacity: 0.7; }
+            50%       { transform: translateY(-50%) scale(1.08); opacity: 1; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 5rem;
+            max-width: 950px;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.72rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--light-2);
+            margin-bottom: 1.75rem;
+            opacity: 0;
+            animation: fadeUp 0.9s 0.3s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+        .hero-eyebrow::before {
+            content: '';
+            display: block;
+            width: 32px;
+            height: 1.5px;
+            background: var(--light-2);
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.2rem, 7.5vw, 6.5rem);
+            line-height: 1.02;
+            color: var(--white);
+            margin-bottom: 1.75rem;
+            opacity: 0;
+            animation: fadeUp 0.9s 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+        .hero-title em {
+            font-style: italic;
+            color: var(--light-2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            color: var(--light-1);
+            opacity: 0;
+            animation: fadeUp 0.9s 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
+            max-width: 560px;
+            line-height: 1.75;
+            font-weight: 300;
+            margin-bottom: 2.75rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.9s 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+
+        .btn-primary {
+            background: var(--light-2);
+            color: var(--dark-green);
+            padding: 0.9rem 2.2rem;
+            border: none;
+            border-radius: 2px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.25s;
+        }
+        .btn-primary:hover {
+            background: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--light-1);
+            padding: 0.9rem 2.2rem;
+            border: 1.5px solid rgba(242,255,205,0.25);
+            border-radius: 2px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.25s;
+        }
+        .btn-ghost:hover {
+            border-color: var(--light-2);
+            color: var(--light-2);
+        }
+
+        .hero-stats {
+            position: absolute;
+            bottom: 3rem;
+            right: 5rem;
+            display: flex;
+            gap: 3rem;
+            opacity: 0;
+            animation: fadeIn 1s 1.4s forwards;
+        }
+        .hero-stat-item { text-align: right; }
+        .hero-stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--light-2);
+            line-height: 1;
+        }
+        .hero-stat-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            color: var(--light-1);
+            opacity: 0.5;
+            text-transform: uppercase;
+            margin-top: 0.3rem;
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            color: rgba(242,255,205,0.4);
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 1s 1.5s forwards;
+        }
+        .scroll-line {
+            width: 1px;
+            height: 44px;
+            background: linear-gradient(var(--light-2), transparent);
+            animation: scrollDrop 2.2s ease-in-out infinite;
+        }
+        @keyframes scrollDrop {
+            0%   { transform: scaleY(0); transform-origin: top; opacity: 0; }
+            30%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+            70%  { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+            100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+        }
+
+        /* ── SECTION COMMONS ───────────────────────────────── */
+        section { padding: 7rem 5rem; }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.68rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--green);
+            margin-bottom: 1.2rem;
+        }
+        .section-label::before {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 1.5px;
+            background: currentColor;
+        }
+        .section-label.light { color: var(--light-2); }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+            line-height: 1.08;
+            color: var(--dark-green);
+            margin-bottom: 1.5rem;
+        }
+        .section-title.light { color: var(--white); }
+
+        /* ── ABOUT ─────────────────────────────────────────── */
+        #about {
+            background: var(--white);
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 7rem;
+            align-items: center;
+        }
+
+        .about-visual {
+            position: relative;
+            height: 520px;
+        }
+
+        .about-card-main {
+            position: absolute;
+            top: 0; left: 0;
+            width: 74%;
+            height: 390px;
+            border-radius: 3px;
+            background: linear-gradient(145deg, var(--dark-green) 0%, var(--green) 100%);
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            overflow: hidden;
+        }
+        .about-card-main::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(229,255,156,0.06);
+        }
+        .about-big-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 5.5rem;
+            color: var(--light-2);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        .about-card-main p {
+            font-size: 0.88rem;
+            color: var(--light-1);
+            opacity: 0.75;
+        }
+
+        .about-card-float {
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 54%;
+            background: var(--light-1);
+            border-radius: 3px;
+            padding: 1.75rem 2rem;
+        }
+        .about-card-float .fl-label {
+            font-size: 0.68rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--green);
+            margin-bottom: 0.4rem;
+        }
+        .about-card-float .fl-stat {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--dark-green);
+            line-height: 1;
+        }
+        .about-card-float .fl-sub {
+            font-size: 0.8rem;
+            color: var(--text-mid);
+            opacity: 0.7;
+            margin-top: 0.3rem;
+        }
+
+        .about-card-accent {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            width: 28%;
+            background: var(--dark-green);
+            border-radius: 3px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .about-card-accent .ac-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--light-2);
+        }
+        .about-card-accent .ac-label {
+            font-size: 0.7rem;
+            color: var(--light-1);
+            opacity: 0.6;
+            margin-top: 0.3rem;
+        }
+
+        .about-text p {
+            color: #4a5a2a;
+            line-height: 1.85;
+            margin-bottom: 1.2rem;
+            font-size: 0.98rem;
+        }
+
+        .about-pillars {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+        .pillar { border-top: 2px solid var(--light-2); padding-top: 1rem; }
+        .pillar-title { font-weight: 700; font-size: 0.85rem; color: var(--dark-green); margin-bottom: 0.4rem; }
+        .pillar-text  { font-size: 0.78rem; color: #6a7a4a; line-height: 1.55; }
+
+        /* ── SERVICES ──────────────────────────────────────── */
+        #services { background: var(--dark-green); }
+
+        .services-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 4rem;
+            gap: 2rem;
+        }
+        .services-header-right {
+            font-size: 0.95rem;
+            color: var(--light-1);
+            opacity: 0.6;
+            max-width: 280px;
+            line-height: 1.65;
+            text-align: right;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5px;
+            background: rgba(242,255,205,0.08);
+            border: 1.5px solid rgba(242,255,205,0.08);
+        }
+
+        .service-card {
+            background: var(--dark-green);
+            padding: 2.75rem;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.35s;
+            cursor: pointer;
+        }
+        .service-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--light-2);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s;
+        }
+        .service-card:hover { background: #2e3c0c; }
+        .service-card:hover::after { transform: scaleX(1); }
+
+        .service-number {
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            color: var(--light-2);
+            opacity: 0.4;
+            margin-bottom: 2.2rem;
+        }
+        .service-icon {
+            width: 44px;
+            height: 44px;
+            color: var(--light-2);
+            margin-bottom: 1.5rem;
+        }
+        .service-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        .service-desc {
+            font-size: 0.85rem;
+            color: var(--light-1);
+            opacity: 0.6;
+            line-height: 1.75;
+        }
+        .service-arrow {
+            position: absolute;
+            bottom: 2.2rem;
+            right: 2.2rem;
+            color: var(--light-2);
+            font-size: 1.1rem;
+            opacity: 0;
+            transform: translateX(-6px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .service-card:hover .service-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ── BOOKING ───────────────────────────────────────── */
+        #booking {
+            background: var(--light-1);
+            padding: 7rem 5rem;
+        }
+
+        .booking-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 7rem;
+            align-items: start;
+        }
+
+        .booking-left .section-title { margin-bottom: 1.2rem; }
+
+        .booking-left > p {
+            font-size: 0.95rem;
+            color: var(--text-mid);
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+        }
+
+        .booking-price-badge {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.2rem;
+            background: var(--dark-green);
+            color: var(--light-2);
+            padding: 0.75rem 1.75rem;
+            border-radius: 2px;
+            margin-bottom: 2rem;
+        }
+        .booking-price-badge .currency { font-size: 1.1rem; font-weight: 600; }
+        .booking-price-badge .amount   { font-family: 'Playfair Display', serif; font-size: 2.2rem; line-height: 1; }
+        .booking-price-badge .per      { font-size: 0.78rem; opacity: 0.6; margin-left: 0.4rem; }
+
+        .booking-includes {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .booking-includes li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: 0.88rem;
+            color: var(--text-mid);
+            list-style: none;
+        }
+        .booking-includes li::before {
+            content: '✓';
+            color: var(--green);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 0.05rem;
+        }
+
+        .booking-form {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 3px;
+            box-shadow: 0 4px 40px rgba(57,72,16,0.08);
+        }
+        .booking-form h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--dark-green);
+            margin-bottom: 2rem;
+        }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+        .form-grid .full { grid-column: 1 / -1; }
+
+        .form-group { display: flex; flex-direction: column; gap: 0.45rem; }
+        .form-group label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--dark-green);
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.82rem 1rem;
+            border: 1.5px solid rgba(57,72,16,0.15);
+            border-radius: 2px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            background: var(--white);
+            color: var(--text-dark);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(77,103,23,0.08);
+        }
+
+        .booking-submit {
+            margin-top: 1.5rem;
+            width: 100%;
+            font-size: 0.88rem;
+            padding: 1rem;
+            justify-content: center;
+        }
+        .booking-note {
+            font-size: 0.75rem;
+            color: var(--text-mid);
+            opacity: 0.55;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        /* ── CONTACT ───────────────────────────────────────── */
+        #contact {
+            background: var(--dark-green);
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 7rem;
+            align-items: start;
+        }
+
+        .contact-info .section-title { margin-bottom: 1.2rem; }
+        .contact-info > p {
+            color: var(--light-1);
+            opacity: 0.65;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            font-size: 0.95rem;
+        }
+
+        .contact-items { display: flex; flex-direction: column; gap: 1.5rem; }
+
+        .contact-item {
+            display: flex;
+            gap: 1.1rem;
+            align-items: flex-start;
+        }
+        .contact-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(242,255,205,0.08);
+            border: 1px solid rgba(242,255,205,0.12);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .contact-item-body .ci-label {
+            font-size: 0.67rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--light-2);
+            opacity: 0.55;
+            margin-bottom: 0.2rem;
+        }
+        .contact-item-body .ci-value {
+            color: var(--light-1);
+            font-size: 0.93rem;
+        }
+
+        /* Contact form on dark bg */
+        .contact-form { display: flex; flex-direction: column; gap: 1.1rem; }
+        .contact-form .form-group label { color: rgba(242,255,205,0.6); }
+        .contact-form .form-group input,
+        .contact-form .form-group textarea {
+            background: rgba(242,255,205,0.04);
+            border-color: rgba(242,255,205,0.12);
+            color: var(--light-1);
+        }
+        .contact-form .form-group input::placeholder,
+        .contact-form .form-group textarea::placeholder {
+            color: rgba(242,255,205,0.25);
+        }
+        .contact-form .form-group input:focus,
+        .contact-form .form-group textarea:focus {
+            border-color: var(--light-2);
+            box-shadow: 0 0 0 3px rgba(229,255,156,0.07);
+        }
+
+        /* ── FOOTER ────────────────────────────────────────── */
+        footer {
+            background: #131b06;
+            padding: 2.5rem 5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .footer-logo svg {
+            height: 36px;
+            width: auto;
+            display: block;
+        }
+        .footer-copy {
+            font-size: 0.78rem;
+            color: var(--light-1);
+            opacity: 0.3;
+        }
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .footer-links a {
+            font-size: 0.78rem;
+            color: var(--light-1);
+            opacity: 0.4;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .footer-links a:hover { opacity: 0.9; }
+
+        /* ── ANIMATIONS ────────────────────────────────────── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(32px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1),
+                        transform 0.75s cubic-bezier(0.22,1,0.36,1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── MOBILE ────────────────────────────────────────── */
+        @media (max-width: 1024px) {
+            nav, nav.scrolled { padding-left: 2.5rem; padding-right: 2.5rem; }
+            section { padding: 5rem 2.5rem; }
+            #about  { grid-template-columns: 1fr; }
+            .about-visual { height: 320px; margin-bottom: 1rem; }
+            .about-card-main { width: 70%; height: 280px; }
+            .about-big-number { font-size: 4rem; }
+            .services-grid { grid-template-columns: 1fr 1fr; }
+            .services-header { flex-direction: column; align-items: flex-start; }
+            .services-header-right { text-align: left; }
+            .booking-layout { grid-template-columns: 1fr; gap: 3rem; }
+            #contact { grid-template-columns: 1fr; gap: 3.5rem; }
+            footer { flex-direction: column; align-items: flex-start; }
+        }
+
+        @media (max-width: 640px) {
+            nav { padding: 1.2rem 1.5rem; }
+            nav.scrolled { padding: 0.9rem 1.5rem; }
+            .nav-links { display: none; }
+            .nav-hamburger { display: flex; }
+            section { padding: 4.5rem 1.5rem; }
+            .hero-content { padding: 0 1.5rem; }
+            .hero-stats { right: 1.5rem; gap: 1.5rem; }
+            .hero-stat-number { font-size: 1.6rem; }
+            .services-grid { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+            .booking-form { padding: 2rem 1.5rem; }
+            .hero-scroll { display: none; }
+        }
+
+        /* ── SERVICE MODAL ─────────────────────────────────── */
+        .svc-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(8, 12, 2, 0.88);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s cubic-bezier(0.22,1,0.36,1);
+        }
+        .svc-modal-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .svc-modal {
+            background: var(--dark-green);
+            border: 1px solid rgba(242,255,205,0.13);
+            border-radius: 4px;
+            max-width: 680px;
+            width: 100%;
+            max-height: 88vh;
+            overflow-y: auto;
+            padding: 3.5rem;
+            position: relative;
+            transform: translateY(28px) scale(0.98);
+            transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(229,255,156,0.15) transparent;
+        }
+        .svc-modal-overlay.open .svc-modal {
+            transform: translateY(0) scale(1);
+        }
+        .svc-modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(242,255,205,0.07);
+            border: 1px solid rgba(242,255,205,0.13);
+            border-radius: 2px;
+            color: var(--light-1);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            transition: background 0.2s, color 0.2s;
+        }
+        .svc-modal-close:hover {
+            background: rgba(242,255,205,0.14);
+            color: var(--light-2);
+        }
+        .svc-modal-num {
+            font-size: 0.65rem;
+            letter-spacing: 0.22em;
+            color: var(--light-2);
+            opacity: 0.45;
+            margin-bottom: 0.7rem;
+        }
+        .svc-modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 3vw, 2.1rem);
+            color: var(--white);
+            line-height: 1.15;
+            margin-bottom: 0.55rem;
+        }
+        .svc-modal-tagline {
+            font-size: 0.92rem;
+            color: var(--light-2);
+            font-style: italic;
+            opacity: 0.8;
+            margin-bottom: 1.75rem;
+        }
+        .svc-modal-divider {
+            height: 1px;
+            background: rgba(242,255,205,0.1);
+            margin-bottom: 1.75rem;
+        }
+        .svc-modal-desc {
+            font-size: 0.94rem;
+            color: var(--light-1);
+            opacity: 0.68;
+            line-height: 1.85;
+            margin-bottom: 2rem;
+        }
+        .svc-modal-section-label {
+            font-size: 0.67rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--light-2);
+            opacity: 0.6;
+            margin-bottom: 0.9rem;
+        }
+        .svc-modal-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            margin-bottom: 2rem;
+        }
+        .svc-modal-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.9rem;
+            font-size: 0.88rem;
+            color: var(--light-1);
+            opacity: 0.72;
+            line-height: 1.6;
+        }
+        .svc-modal-list li::before {
+            content: '→';
+            color: var(--light-2);
+            flex-shrink: 0;
+            font-size: 0.78rem;
+            margin-top: 0.15rem;
+        }
+        .svc-modal-ideal {
+            background: rgba(229,255,156,0.05);
+            border-left: 2px solid var(--light-2);
+            padding: 1rem 1.25rem;
+            border-radius: 0 2px 2px 0;
+            margin-bottom: 2.25rem;
+        }
+        .svc-modal-ideal-label {
+            font-size: 0.64rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--light-2);
+            opacity: 0.55;
+            margin-bottom: 0.35rem;
+        }
+        .svc-modal-ideal p {
+            font-size: 0.85rem;
+            color: var(--light-1);
+            opacity: 0.62;
+            line-height: 1.65;
+        }
+        .svc-modal-cta {
+            width: 100%;
+            justify-content: center;
+            padding: 1rem;
+            font-size: 0.85rem;
+        }
+        @media (max-width: 640px) {
+            .svc-modal { padding: 2rem 1.5rem; }
+        }
+
+        /* ── LANG TOGGLE ───────────────────────────────── */
+        .lang-toggle {
+            background: rgba(242,255,205,0.08);
+            border: 1px solid rgba(242,255,205,0.18);
+            color: rgba(242,255,205,0.7);
+            padding: 0.32rem 0.72rem;
+            border-radius: 2px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+        .lang-toggle:hover {
+            background: rgba(242,255,205,0.16);
+            color: var(--light-2);
+            border-color: rgba(242,255,205,0.35);
+        }
+
+        /* Mobile nav open */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(20, 27, 6, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 99;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2.5rem;
+        }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav a {
+            color: var(--light-1);
+            text-decoration: none;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            transition: color 0.2s;
+        }
+        .mobile-nav a:hover { color: var(--light-2); }
+        .mobile-nav-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--light-1);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav id="navbar">
+        <a href="#home" class="nav-logo">
+            <svg viewBox="0 0 290 54" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Simonsky Solutions">
+                <!-- infinity glow -->
+                <path d="M 44,27 C 38,14 22,14 22,27 C 22,40 38,40 44,27 C 50,40 66,40 66,27 C 66,14 50,14 44,27"
+                      fill="none" stroke="#e5ff9c" stroke-width="9" stroke-linecap="round" opacity="0.07"/>
+                <!-- infinity stroke -->
+                <path d="M 44,27 C 38,14 22,14 22,27 C 22,40 38,40 44,27 C 50,40 66,40 66,27 C 66,14 50,14 44,27"
+                      fill="none" stroke="#e5ff9c" stroke-width="2.2" stroke-linecap="round"/>
+                <!-- crossover node -->
+                <circle cx="44" cy="27" r="2.2" fill="#e5ff9c"/>
+                <!-- separator -->
+                <line x1="84" y1="12" x2="84" y2="42" stroke="#4d6717" stroke-width="1" opacity="0.7"/>
+                <!-- wordmark -->
+                <text x="98" y="26" font-family="'Playfair Display', Georgia, serif" font-size="20" font-weight="700"
+                      fill="#f2ffcd" dominant-baseline="middle" letter-spacing="1">SIMONSKY</text>
+                <text x="99" y="41" font-family="'Inter', 'Helvetica Neue', sans-serif" font-size="7.5" font-weight="500"
+                      fill="#e5ff9c" dominant-baseline="middle" letter-spacing="4" opacity="0.6">SOLUTIONS</text>
+            </svg>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#about" data-i18n="nav.about">About</a></li>
+            <li><a href="#services" data-i18n="nav.services">Services</a></li>
+            <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+            <li><a href="#booking" class="nav-cta" data-i18n="nav.cta">Book a Call →</a></li>
+            <li><button class="lang-toggle" id="langToggle" onclick="toggleLang()">БГ</button></li>
+        </ul>
+        <div class="nav-hamburger" onclick="openMobileNav()" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav" id="mobileNav">
+        <button class="mobile-nav-close" onclick="closeMobileNav()" aria-label="Close menu">✕</button>
+        <a href="#about"    onclick="closeMobileNav()" data-i18n="nav.about">About</a>
+        <a href="#services" onclick="closeMobileNav()" data-i18n="nav.services">Services</a>
+        <a href="#booking"  onclick="closeMobileNav()" data-i18n="nav.cta">Book a Call →</a>
+        <a href="#contact"  onclick="closeMobileNav()" data-i18n="nav.contact">Contact</a>
+        <button class="lang-toggle" id="langToggleMobile" onclick="toggleLang()" style="margin-top:1rem">БГ</button>
+    </div>
+
+    <!-- HERO -->
+    <section id="home">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-orb"></div>
+        <div class="hero-content">
+            <p class="hero-eyebrow" data-i18n="hero.eyebrow">Industrial ERP · Enterprise Software · Digital Transformation</p>
+            <h1 class="hero-title" data-i18n-html="hero.title">
+                Systems Built<br>for <em>Industry</em><br>That Scales.
+            </h1>
+            <p class="hero-subtitle" data-i18n="hero.subtitle">
+                From factory-floor ERP and MES to cloud infrastructure, we engineer the digital backbone that powers your operations — precisely, reliably, and at scale.
+            </p>
+            <div class="hero-actions">
+                <a href="#services" class="btn-primary" data-i18n="hero.cta1">Explore Services →</a>
+                <a href="#booking"  class="btn-ghost" data-i18n="hero.cta2">Book a Consultation</a>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat-item">
+                <div class="hero-stat-number">10+</div>
+                <div class="hero-stat-label" data-i18n="hero.stat1">Years Experience</div>
+            </div>
+            <div class="hero-stat-item">
+                <div class="hero-stat-number">98%</div>
+                <div class="hero-stat-label" data-i18n="hero.stat2">Client Satisfaction</div>
+            </div>
+            <div class="hero-stat-item">
+                <div class="hero-stat-number">50+</div>
+                <div class="hero-stat-label" data-i18n="hero.stat3">Projects Delivered</div>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <div class="scroll-line"></div>
+            <span data-i18n="hero.scroll">Scroll</span>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="about-visual reveal">
+            <div class="about-card-main">
+                <div class="about-big-number">10+</div>
+                <p data-i18n="about.card">Years of enterprise software engineering</p>
+            </div>
+            <div class="about-card-float">
+                <div class="fl-label" data-i18n="about.fl-label">Client Satisfaction</div>
+                <div class="fl-stat">98%</div>
+                <div class="fl-sub" data-i18n="about.fl-sub">Across all delivered projects</div>
+            </div>
+            <div class="about-card-accent">
+                <div class="ac-num">50+</div>
+                <div class="ac-label" data-i18n="about.ac-label">Projects Delivered</div>
+            </div>
+        </div>
+        <div class="about-text">
+            <p class="section-label reveal" data-i18n="about.label">About Us</p>
+            <h2 class="section-title reveal" data-i18n="about.title">We Build What Your Business Needs to Grow</h2>
+            <p class="reveal" data-i18n="about.p1">Simonsky Solutions is a software engineering firm specializing in enterprise-grade solutions for industrial businesses. We work with factories and ambitious organizations to design, build, and integrate the digital systems that eliminate friction and unlock growth.</p>
+            <p class="reveal" data-i18n="about.p2">Our flagship capability is building fully customized ERP systems for industrial factories — integrating inventory, sales, accounting, shop floor operations, and MES into a single unified platform that functions as a complete digital twin of your facility. Beyond manufacturing, we deliver cloud infrastructure, system integrations, and web applications: a full-stack technology partner built for precision.</p>
+            <div class="about-pillars">
+                <div class="pillar reveal">
+                    <div class="pillar-title" data-i18n="about.pillar1-title">Precision</div>
+                    <div class="pillar-text" data-i18n="about.pillar1-text">Every system tailored to your exact workflow, not a template.</div>
+                </div>
+                <div class="pillar reveal">
+                    <div class="pillar-title" data-i18n="about.pillar2-title">Reliability</div>
+                    <div class="pillar-text" data-i18n="about.pillar2-text">Production-grade code with zero-compromise quality standards.</div>
+                </div>
+                <div class="pillar reveal">
+                    <div class="pillar-title" data-i18n="about.pillar3-title">Partnership</div>
+                    <div class="pillar-text" data-i18n="about.pillar3-text">We're invested in your outcomes, not just the delivery milestone.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services">
+        <div class="services-header">
+            <div class="services-header-text">
+                <p class="section-label light reveal" data-i18n="services.label">What We Do</p>
+                <h2 class="section-title light reveal" data-i18n-html="services.title">End-to-End<br>Digital Solutions</h2>
+            </div>
+            <p class="services-header-right reveal" data-i18n="services.subtitle">From strategy to deployment — we cover the full technology stack so you don't have to.</p>
+        </div>
+        <div class="services-grid">
+
+            <div class="service-card reveal" onclick="openServiceModal(0)">
+                <div class="service-number">01</div>
+                <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/>
+                </svg>
+                <h3 class="service-title" data-i18n="svc0.title">Custom ERP & Odoo Implementation</h3>
+                <p class="service-desc" data-i18n="svc0.desc">Fully customized ERP for industrial factories — unifying inventory, sales, accounting, shop floor operations, and MES into one platform. We build the digital twin of your factory: real-time production visibility and complete operational control, end to end.</p>
+                <span class="service-arrow">→</span>
+            </div>
+
+            <div class="service-card reveal" onclick="openServiceModal(1)">
+                <div class="service-number">02</div>
+                <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"/>
+                </svg>
+                <h3 class="service-title" data-i18n="svc1.title">Web Application Development</h3>
+                <p class="service-desc" data-i18n="svc1.desc">High-performance web applications engineered for scale. From internal tools to customer-facing platforms — we build it right the first time.</p>
+                <span class="service-arrow">→</span>
+            </div>
+
+            <div class="service-card reveal" onclick="openServiceModal(2)">
+                <div class="service-number">03</div>
+                <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z"/>
+                </svg>
+                <h3 class="service-title" data-i18n="svc2.title">Cloud & DevOps Solutions</h3>
+                <p class="service-desc" data-i18n="svc2.desc">Modern cloud infrastructure built for reliability. CI/CD pipelines, containerization, and infrastructure-as-code that keeps your team shipping with confidence.</p>
+                <span class="service-arrow">→</span>
+            </div>
+
+            <div class="service-card reveal" onclick="openServiceModal(3)">
+                <div class="service-number">04</div>
+                <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/>
+                </svg>
+                <h3 class="service-title" data-i18n="svc3.title">System Integration</h3>
+                <p class="service-desc" data-i18n="svc3.desc">Connect your platforms, APIs, and third-party services into a unified ecosystem. One source of truth. Zero data silos. Seamless data flow across your stack.</p>
+                <span class="service-arrow">→</span>
+            </div>
+
+            <div class="service-card reveal" onclick="openServiceModal(4)">
+                <div class="service-number">05</div>
+                <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/>
+                </svg>
+                <h3 class="service-title" data-i18n="svc4.title">B2B Portals</h3>
+                <p class="service-desc" data-i18n="svc4.desc">Purpose-built portals for business relationships — supplier management, partner platforms, customer self-service, and more. Secure, scalable, and tailored.</p>
+                <span class="service-arrow">→</span>
+            </div>
+
+            <div class="service-card reveal" onclick="openServiceModal(5)">
+                <div class="service-number">06</div>
+                <svg class="service-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+                </svg>
+                <h3 class="service-title" data-i18n="svc5.title">Business Process Automation</h3>
+                <p class="service-desc" data-i18n="svc5.desc">Eliminate manual work and increase operational efficiency. We map your workflows, identify every bottleneck, and automate intelligently — so your team focuses on what matters.</p>
+                <span class="service-arrow">→</span>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- BOOKING -->
+    <section id="booking">
+        <div class="booking-layout">
+            <div class="booking-left">
+                <p class="section-label reveal" data-i18n="booking.label">Strategy Session</p>
+                <div class="booking-price-badge reveal">
+                    <span class="currency">€</span>
+                    <span class="amount">100</span>
+                    <span class="per" data-i18n="booking.per">/ session</span>
+                </div>
+                <h2 class="section-title reveal" data-i18n="booking.title">Book a Consultation</h2>
+                <p class="reveal" data-i18n="booking.desc">A focused 60-minute session with our senior engineers. We'll assess your current systems, identify the highest-impact opportunities, and map a clear path forward — with zero fluff.</p>
+                <ul class="booking-includes reveal">
+                    <li data-i18n="booking.inc1">60-minute video call with a senior engineer</li>
+                    <li data-i18n="booking.inc2">Current system assessment & gap analysis</li>
+                    <li data-i18n="booking.inc3">Prioritized recommendations you can act on immediately</li>
+                    <li data-i18n="booking.inc4">Follow-up summary document within 24 hours</li>
+                    <li data-i18n="booking.inc5">No commitment required after the session</li>
+                </ul>
+            </div>
+            <div class="booking-form reveal">
+                <h3 data-i18n="booking.form-title">Reserve Your Session</h3>
+                <form id="bookingForm" onsubmit="handleBooking(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label data-i18n="booking.fn">First Name</label>
+                            <input type="text" placeholder="John" data-i18n-placeholder="booking.fn-ph" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="booking.ln">Last Name</label>
+                            <input type="text" placeholder="Smith" data-i18n-placeholder="booking.ln-ph" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="booking.email">Business Email</label>
+                            <input type="email" placeholder="john@company.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="booking.company">Company</label>
+                            <input type="text" placeholder="Acme Corp" data-i18n-placeholder="booking.company-ph" required>
+                        </div>
+                        <div class="form-group full">
+                            <label data-i18n="booking.interest">Primary Interest</label>
+                            <select required>
+                                <option value="" disabled selected data-i18n="booking.opt0">Select a service area…</option>
+                                <option data-i18n="booking.opt1">Custom ERP & Odoo Implementation</option>
+                                <option data-i18n="booking.opt2">Web Application Development</option>
+                                <option data-i18n="booking.opt3">Cloud & DevOps Solutions</option>
+                                <option data-i18n="booking.opt4">System Integration</option>
+                                <option data-i18n="booking.opt5">B2B Portal Development</option>
+                                <option data-i18n="booking.opt6">Business Process Automation</option>
+                                <option data-i18n="booking.opt7">Multiple / Not Sure Yet</option>
+                            </select>
+                        </div>
+                        <div class="form-group full">
+                            <label data-i18n="booking.project">Tell us briefly about your project</label>
+                            <textarea rows="3" placeholder="What are you trying to solve?" data-i18n-placeholder="booking.project-ph"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary booking-submit" data-i18n="booking.submit">
+                        Pay €100 & Reserve Session →
+                    </button>
+                    <p class="booking-note" data-i18n="booking.note">🔒 Secure payment via Stripe. Session confirmed within 24 hours.</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+        <div class="contact-info">
+            <p class="section-label light reveal" data-i18n="contact.label">Get In Touch</p>
+            <h2 class="section-title light reveal" data-i18n-html="contact.title">Let's Talk About<br>Your Project</h2>
+            <p class="reveal" data-i18n="contact.desc">Have a question before booking? Send us a message and we'll get back to you within one business day.</p>
+            <div class="contact-items reveal">
+                <div class="contact-item">
+                    <div class="contact-icon">✉</div>
+                    <div class="contact-item-body">
+                        <div class="ci-label" data-i18n="contact.email-label">Email</div>
+                        <div class="ci-value">hello@simonskysolutions.com</div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div class="contact-item-body">
+                        <div class="ci-label" data-i18n="contact.loc-label">Location</div>
+                        <div class="ci-value" data-i18n="contact.loc-value">Available Globally · Remote-First</div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">⏱</div>
+                    <div class="contact-item-body">
+                        <div class="ci-label" data-i18n="contact.resp-label">Response Time</div>
+                        <div class="ci-value" data-i18n="contact.resp-value">Within 1 Business Day</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form class="contact-form reveal" onsubmit="handleContact(event)">
+            <div class="form-group">
+                <label data-i18n="contact.name-label">Your Name</label>
+                <input type="text" placeholder="Full name" data-i18n-placeholder="contact.name-ph" required>
+            </div>
+            <div class="form-group">
+                <label data-i18n="contact.email-form">Email Address</label>
+                <input type="email" placeholder="you@company.com" required>
+            </div>
+            <div class="form-group">
+                <label data-i18n="contact.subject">Subject</label>
+                <input type="text" placeholder="What's this about?" data-i18n-placeholder="contact.subject-ph" required>
+            </div>
+            <div class="form-group">
+                <label data-i18n="contact.message">Message</label>
+                <textarea rows="5" placeholder="Tell us about your project or question…" data-i18n-placeholder="contact.msg-ph" required></textarea>
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%; justify-content:center; padding:1rem;" data-i18n="contact.send">
+                Send Message →
+            </button>
+        </form>
+    </section>
+
+    <!-- SERVICE MODAL -->
+    <div class="svc-modal-overlay" id="svcModalOverlay" onclick="closeSvcModalOnOverlay(event)">
+        <div class="svc-modal" id="svcModal">
+            <button class="svc-modal-close" onclick="closeSvcModal()" aria-label="Close">✕</button>
+            <div class="svc-modal-num" id="svcModalNum"></div>
+            <h2 class="svc-modal-title" id="svcModalTitle"></h2>
+            <p class="svc-modal-tagline" id="svcModalTagline"></p>
+            <div class="svc-modal-divider"></div>
+            <p class="svc-modal-desc" id="svcModalDesc"></p>
+            <p class="svc-modal-section-label" data-i18n="modal.includes">What's included</p>
+            <ul class="svc-modal-list" id="svcModalList"></ul>
+            <div class="svc-modal-ideal">
+                <div class="svc-modal-ideal-label" data-i18n="modal.ideal-label">Ideal for</div>
+                <p id="svcModalIdeal"></p>
+            </div>
+            <a href="#booking" class="btn-primary svc-modal-cta" onclick="closeSvcModal()" data-i18n="modal.cta">Book a Consultation →</a>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">
+            <svg viewBox="0 0 290 54" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Simonsky Solutions">
+                <path d="M 44,27 C 38,14 22,14 22,27 C 22,40 38,40 44,27 C 50,40 66,40 66,27 C 66,14 50,14 44,27"
+                      fill="none" stroke="#e5ff9c" stroke-width="9" stroke-linecap="round" opacity="0.07"/>
+                <path d="M 44,27 C 38,14 22,14 22,27 C 22,40 38,40 44,27 C 50,40 66,40 66,27 C 66,14 50,14 44,27"
+                      fill="none" stroke="#e5ff9c" stroke-width="2.2" stroke-linecap="round"/>
+                <circle cx="44" cy="27" r="2.2" fill="#e5ff9c"/>
+                <line x1="84" y1="12" x2="84" y2="42" stroke="#4d6717" stroke-width="1" opacity="0.7"/>
+                <text x="98" y="26" font-family="'Playfair Display', Georgia, serif" font-size="20" font-weight="700"
+                      fill="#f2ffcd" dominant-baseline="middle" letter-spacing="1">SIMONSKY</text>
+                <text x="99" y="41" font-family="'Inter', 'Helvetica Neue', sans-serif" font-size="7.5" font-weight="500"
+                      fill="#e5ff9c" dominant-baseline="middle" letter-spacing="4" opacity="0.6">SOLUTIONS</text>
+            </svg>
+        </div>
+        <p class="footer-copy" data-i18n="footer.copy">© 2025 Simonsky Solutions. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#booking">Book</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </footer>
+
+    <script>
+        // ── Nav scroll ──────────────────────────────────────
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 60);
+        });
+
+        // ── Mobile nav ──────────────────────────────────────
+        function openMobileNav()  { document.getElementById('mobileNav').classList.add('open'); document.body.style.overflow = 'hidden'; }
+        function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); document.body.style.overflow = ''; }
+
+        // ── Scroll reveal ───────────────────────────────────
+        const revealEls = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    const siblings = [...entry.target.parentElement.querySelectorAll('.reveal:not(.visible)')];
+                    const delay = siblings.indexOf(entry.target) * 90;
+                    setTimeout(() => entry.target.classList.add('visible'), Math.min(delay, 360));
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        revealEls.forEach(el => revealObserver.observe(el));
+
+        // ── i18n ────────────────────────────────────────────
+        let currentLang = localStorage.getItem('lang') || 'en';
+
+        const translations = {
+            en: {
+                'nav.about':'About','nav.services':'Services','nav.contact':'Contact','nav.cta':'Book a Call →',
+                'hero.eyebrow':'Industrial ERP · Enterprise Software · Digital Transformation',
+                'hero.title':'Systems Built<br>for <em>Industry</em><br>That Scales.',
+                'hero.subtitle':'From factory-floor ERP and MES to cloud infrastructure, we engineer the digital backbone that powers your operations — precisely, reliably, and at scale.',
+                'hero.cta1':'Explore Services →','hero.cta2':'Book a Consultation',
+                'hero.stat1':'Years Experience','hero.stat2':'Client Satisfaction','hero.stat3':'Projects Delivered',
+                'hero.scroll':'Scroll',
+                'about.card':'Years of enterprise software engineering',
+                'about.fl-label':'Client Satisfaction','about.fl-sub':'Across all delivered projects','about.ac-label':'Projects Delivered',
+                'about.label':'About Us','about.title':'We Build What Your Business Needs to Grow',
+                'about.p1':'Simonsky Solutions is a software engineering firm specializing in enterprise-grade solutions for industrial businesses. We work with factories and ambitious organizations to design, build, and integrate the digital systems that eliminate friction and unlock growth.',
+                'about.p2':'Our flagship capability is building fully customized ERP systems for industrial factories — integrating inventory, sales, accounting, shop floor operations, and MES into a single unified platform that functions as a complete digital twin of your facility. Beyond manufacturing, we deliver cloud infrastructure, system integrations, and web applications: a full-stack technology partner built for precision.',
+                'about.pillar1-title':'Precision','about.pillar1-text':'Every system tailored to your exact workflow, not a template.',
+                'about.pillar2-title':'Reliability','about.pillar2-text':'Production-grade code with zero-compromise quality standards.',
+                'about.pillar3-title':'Partnership','about.pillar3-text':'We\'re invested in your outcomes, not just the delivery milestone.',
+                'services.label':'What We Do','services.title':'End-to-End<br>Digital Solutions',
+                'services.subtitle':'From strategy to deployment — we cover the full technology stack so you don\'t have to.',
+                'svc0.title':'Custom ERP & Odoo Implementation','svc0.desc':'Fully customized ERP for industrial factories — unifying inventory, sales, accounting, shop floor operations, and MES into one platform. We build the digital twin of your factory: real-time production visibility and complete operational control, end to end.',
+                'svc1.title':'Web Application Development','svc1.desc':'High-performance web applications engineered for scale. From internal tools to customer-facing platforms — we build it right the first time.',
+                'svc2.title':'Cloud & DevOps Solutions','svc2.desc':'Modern cloud infrastructure built for reliability. CI/CD pipelines, containerization, and infrastructure-as-code that keeps your team shipping with confidence.',
+                'svc3.title':'System Integration','svc3.desc':'Connect your platforms, APIs, and third-party services into a unified ecosystem. One source of truth. Zero data silos. Seamless data flow across your stack.',
+                'svc4.title':'B2B Portals','svc4.desc':'Purpose-built portals for business relationships — supplier management, partner platforms, customer self-service, and more. Secure, scalable, and tailored.',
+                'svc5.title':'Business Process Automation','svc5.desc':'Eliminate manual work and increase operational efficiency. We map your workflows, identify every bottleneck, and automate intelligently — so your team focuses on what matters.',
+                'booking.label':'Strategy Session','booking.title':'Book a Consultation','booking.per':'/ session',
+                'booking.desc':'A focused 60-minute session with our senior engineers. We\'ll assess your current systems, identify the highest-impact opportunities, and map a clear path forward — with zero fluff.',
+                'booking.inc1':'60-minute video call with a senior engineer','booking.inc2':'Current system assessment & gap analysis',
+                'booking.inc3':'Prioritized recommendations you can act on immediately','booking.inc4':'Follow-up summary document within 24 hours',
+                'booking.inc5':'No commitment required after the session',
+                'booking.form-title':'Reserve Your Session',
+                'booking.fn':'First Name','booking.fn-ph':'John','booking.ln':'Last Name','booking.ln-ph':'Smith',
+                'booking.email':'Business Email','booking.company':'Company','booking.company-ph':'Acme Corp',
+                'booking.interest':'Primary Interest','booking.project':'Tell us briefly about your project',
+                'booking.project-ph':'What are you trying to solve?',
+                'booking.opt0':'Select a service area…','booking.opt1':'Custom ERP & Odoo Implementation',
+                'booking.opt2':'Web Application Development','booking.opt3':'Cloud & DevOps Solutions',
+                'booking.opt4':'System Integration','booking.opt5':'B2B Portal Development',
+                'booking.opt6':'Business Process Automation','booking.opt7':'Multiple / Not Sure Yet',
+                'booking.submit':'Pay €100 & Reserve Session →',
+                'booking.note':'🔒 Secure payment via Stripe. Session confirmed within 24 hours.',
+                'contact.label':'Get In Touch','contact.title':'Let\'s Talk About<br>Your Project',
+                'contact.desc':'Have a question before booking? Send us a message and we\'ll get back to you within one business day.',
+                'contact.email-label':'Email','contact.loc-label':'Location','contact.loc-value':'Available Globally · Remote-First',
+                'contact.resp-label':'Response Time','contact.resp-value':'Within 1 Business Day',
+                'contact.name-label':'Your Name','contact.name-ph':'Full name',
+                'contact.email-form':'Email Address',
+                'contact.subject':'Subject','contact.subject-ph':'What\'s this about?',
+                'contact.message':'Message','contact.msg-ph':'Tell us about your project or question…',
+                'contact.send':'Send Message →',
+                'modal.includes':'What\'s included','modal.ideal-label':'Ideal for','modal.cta':'Book a Consultation →',
+                'footer.copy':'© 2025 Simonsky Solutions. All rights reserved.',
+                'alert.booking':'Redirecting to secure payment…\n\nTo activate: replace this with your Stripe Payment Link URL.',
+                'alert.contact':'Message sent! We\'ll be in touch within one business day.',
+                'page.title':'Simonsky Solutions — Enterprise Software & Digital Transformation',
+            },
+            bg: {
+                'nav.about':'За нас','nav.services':'Услуги','nav.contact':'Контакти','nav.cta':'Запази Час →',
+                'hero.eyebrow':'Индустриален ERP · Корпоративен Софтуер · Дигитална Трансформация',
+                'hero.title':'Системи,<br>Създадени за <em>Индустрията</em>,<br>Която Расте.',
+                'hero.subtitle':'От заводски ERP и MES до облачна инфраструктура — ние изграждаме цифровата основа, която захранва вашите операции — прецизно, надеждно и в мащаб.',
+                'hero.cta1':'Разгледай Услугите →','hero.cta2':'Запази Консултация',
+                'hero.stat1':'Години Опит','hero.stat2':'Клиентско Удовлетворение','hero.stat3':'Завършени Проекта',
+                'hero.scroll':'Превъртете',
+                'about.card':'Години опит в корпоративен софтуер',
+                'about.fl-label':'Клиентско Удовлетворение','about.fl-sub':'По всички завършени проекти','about.ac-label':'Завършени Проекта',
+                'about.label':'За Нас','about.title':'Изграждаме Това, от Което Бизнесът Ви Се Нуждае да Расте',
+                'about.p1':'Simonsky Solutions е фирма за софтуерно инженерство, специализирана в корпоративни решения за индустриални предприятия. Работим с фабрики и амбициозни организации, за да проектираме, изграждаме и интегрираме цифровите системи, които премахват триенето и отключват растежа.',
+                'about.p2':'Нашата водеща компетентност е изграждането на напълно персонализирани ERP системи за индустриални фабрики — интегриращи инвентар, продажби, счетоводство, производствени операции и MES в единна платформа, функционираща като пълен цифров двойник на вашето предприятие. Отвъд производството, предоставяме облачна инфраструктура, системни интеграции и уеб приложения: пълноценен технологичен партньор, изграден за прецизност.',
+                'about.pillar1-title':'Прецизност','about.pillar1-text':'Всяка система, адаптирана към вашия точен работен процес, не по шаблон.',
+                'about.pillar2-title':'Надеждност','about.pillar2-text':'Производствен код с безкомпромисни стандарти за качество.',
+                'about.pillar3-title':'Партньорство','about.pillar3-text':'Ние сме ангажирани с вашите резултати, не само с крайния срок на доставката.',
+                'services.label':'Какво Правим','services.title':'Цялостни<br>Дигитални Решения',
+                'services.subtitle':'От стратегия до внедряване — ние покриваме пълния технологичен стек, за да не се налага на вас.',
+                'svc0.title':'Персонализиран ERP и внедряване на Odoo','svc0.desc':'Напълно персонализиран ERP за индустриални фабрики — обединяващ инвентар, продажби, счетоводство, производствени операции и MES в една платформа. Изграждаме цифровия двойник на вашата фабрика: видимост в реално време и пълен оперативен контрол.',
+                'svc1.title':'Разработка на Уеб Приложения','svc1.desc':'Уеб приложения с висока производителност, проектирани за мащаб. От вътрешни инструменти до клиентски платформи — изграждаме ги правилно от самото начало.',
+                'svc2.title':'Облачни и DevOps Решения','svc2.desc':'Съвременна облачна инфраструктура, изградена за надеждност. CI/CD тръбопроводи, контейнеризация и инфраструктура като код, за да доставя екипът ви с увереност.',
+                'svc3.title':'Системна Интеграция','svc3.desc':'Свържете вашите платформи, API-та и услуги на трети страни в унифицирана екосистема. Един верен източник. Нула информационни силози. Безпроблемен поток от данни.',
+                'svc4.title':'B2B Портали','svc4.desc':'Специализирани портали за бизнес взаимоотношения — управление на доставчици, партньорски платформи, самообслужване на клиенти и още. Сигурни, мащабируеми и персонализирани.',
+                'svc5.title':'Автоматизация на Бизнес Процеси','svc5.desc':'Елиминирайте ръчния труд и повишете оперативната ефективност. Картографираме работните ви процеси, идентифицираме всяко тясно място и автоматизираме интелигентно.',
+                'booking.label':'Стратегическа Сесия','booking.title':'Запази Консултация','booking.per':'/ сесия',
+                'booking.desc':'Фокусирана 60-минутна сесия с нашите старши инженери. Ще оценим текущите ви системи, ще идентифицираме възможностите с най-висок ефект и ще очертаем ясен път напред — без излишен шум.',
+                'booking.inc1':'60-минутен видео разговор с старши инженер','booking.inc2':'Оценка на текущите системи и анализ на пропуските',
+                'booking.inc3':'Приоритизирани препоръки, по които можете да действате незабавно','booking.inc4':'Обобщителен документ в рамките на 24 часа',
+                'booking.inc5':'Без ангажимент след сесията',
+                'booking.form-title':'Запази Своята Сесия',
+                'booking.fn':'Собствено Име','booking.fn-ph':'Иван','booking.ln':'Фамилия','booking.ln-ph':'Иванов',
+                'booking.email':'Служебен Имейл','booking.company':'Компания','booking.company-ph':'Примерна ЕООД',
+                'booking.interest':'Основен Интерес','booking.project':'Разкажете ни накратко за вашия проект',
+                'booking.project-ph':'Какво се опитвате да решите?',
+                'booking.opt0':'Изберете услуга…','booking.opt1':'Персонализиран ERP и Odoo',
+                'booking.opt2':'Разработка на Уеб Приложения','booking.opt3':'Облачни и DevOps Решения',
+                'booking.opt4':'Системна Интеграция','booking.opt5':'Разработка на B2B Портал',
+                'booking.opt6':'Автоматизация на Бизнес Процеси','booking.opt7':'Няколко / Все Още Не Съм Сигурен',
+                'booking.submit':'Плати €100 и Запази Сесия →',
+                'booking.note':'🔒 Сигурно плащане чрез Stripe. Сесията е потвърдена в рамките на 24 часа.',
+                'contact.label':'Свържете Се','contact.title':'Нека Поговорим за<br>Вашия Проект',
+                'contact.desc':'Имате въпрос преди да запазите час? Изпратете ни съобщение и ще отговорим в рамките на един работен ден.',
+                'contact.email-label':'Имейл','contact.loc-label':'Местоположение','contact.loc-value':'Достъпни Глобално · Дистанционно',
+                'contact.resp-label':'Време за Отговор','contact.resp-value':'В рамките на 1 работен ден',
+                'contact.name-label':'Вашето Име','contact.name-ph':'Пълно Име',
+                'contact.email-form':'Имейл Адрес',
+                'contact.subject':'Тема','contact.subject-ph':'Относно какво е?',
+                'contact.message':'Съобщение','contact.msg-ph':'Разкажете ни за вашия проект или въпрос…',
+                'contact.send':'Изпрати Съобщение →',
+                'modal.includes':'Включено','modal.ideal-label':'Подходящо за','modal.cta':'Запази Консултация →',
+                'footer.copy':'© 2025 Simonsky Solutions. Всички права запазени.',
+                'alert.booking':'Пренасочване към сигурно плащане…\n\nЗа активиране: заменете с URL адреса на вашата Stripe платежна връзка.',
+                'alert.contact':'Съобщението е изпратено! Ще се свържем с вас в рамките на един работен ден.',
+                'page.title':'Simonsky Solutions — Корпоративен Софтуер и Дигитална Трансформация',
+            }
+        };
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            const t = translations[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key] !== undefined) el.textContent = t[key];
+            });
+            document.querySelectorAll('[data-i18n-html]').forEach(el => {
+                const key = el.getAttribute('data-i18n-html');
+                if (t[key] !== undefined) el.innerHTML = t[key];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (t[key] !== undefined) el.placeholder = t[key];
+            });
+            const label = lang === 'en' ? 'БГ' : 'EN';
+            document.getElementById('langToggle').textContent = label;
+            document.getElementById('langToggleMobile').textContent = label;
+            document.title = t['page.title'];
+            localStorage.setItem('lang', lang);
+        }
+
+        function toggleLang() { setLang(currentLang === 'en' ? 'bg' : 'en'); }
+
+        // ── Form handlers ───────────────────────────────────
+        function handleBooking(e) {
+            e.preventDefault();
+            alert(translations[currentLang]['alert.booking']);
+        }
+
+        function handleContact(e) {
+            e.preventDefault();
+            alert(translations[currentLang]['alert.contact']);
+            e.target.reset();
+        }
+
+        // ── Service modal data ──────────────────────────────
+        const services = [
+            {
+                num: '01',
+                title: 'Custom ERP & Odoo Implementation',
+                tagline: 'One platform. Your entire factory, digitalized.',
+                desc: 'We build fully customized ERP systems purpose-built for industrial manufacturers. By integrating every layer of your operation — inventory, procurement, sales, accounting, shop floor control, and MES — we create a comprehensive digital twin of your factory. The result: real-time visibility across the entire production lifecycle, data-driven decision-making, and complete operational control from a single unified platform.',
+                includes: [
+                    'Inventory & warehouse management — raw materials, WIP, and finished goods',
+                    'Sales, CRM & order-to-delivery workflow',
+                    'Accounting, cost tracking & financial reporting',
+                    'Shop floor control, work orders & production scheduling',
+                    'MES integration — machine data, OEE tracking & real-time production monitoring',
+                    'Bill of materials, routing & capacity planning',
+                    'Quality control & non-conformance management',
+                    'Full lifecycle delivery: scoping, build, go-live & ongoing support'
+                ],
+                ideal: 'Industrial manufacturers and process plants replacing fragmented, disconnected systems with a single integrated platform — one that mirrors real-world factory operations and delivers complete digital control of the production floor.'
+            },
+            {
+                num: '02',
+                title: 'Web Application Development',
+                tagline: 'Performance-first. Scale-ready. Delivered right.',
+                desc: 'We build web applications that hold up under real-world demand — not just in demos. From internal tooling to high-traffic customer platforms, our engineering is built around reliability, maintainability, and speed.',
+                includes: [
+                    'Full-stack development (React, Vue, Node.js, Python, and more)',
+                    'API design and backend architecture',
+                    'Database design and query optimization',
+                    'Authentication, authorization & security hardening',
+                    'Performance profiling and load testing',
+                    'Documentation and handover to internal teams'
+                ],
+                ideal: 'Companies that need custom software instead of off-the-shelf tools that don\'t quite fit their workflows.'
+            },
+            {
+                num: '03',
+                title: 'Cloud & DevOps Solutions',
+                tagline: 'Ship faster. Break less. Scale without limits.',
+                desc: 'Modern infrastructure shouldn\'t be a bottleneck. We design and implement cloud environments that are resilient, automated, and easy for your team to operate — so deployments are a non-event, not a war story.',
+                includes: [
+                    'Cloud architecture design (AWS, GCP, Azure)',
+                    'Containerization with Docker & Kubernetes',
+                    'CI/CD pipeline design and implementation',
+                    'Infrastructure as Code (Terraform, Pulumi)',
+                    'Monitoring, alerting & observability setup',
+                    'Cost optimization and security compliance'
+                ],
+                ideal: 'Engineering teams that want to move faster without sacrificing reliability or incurring unnecessary cloud spend.'
+            },
+            {
+                num: '04',
+                title: 'System Integration',
+                tagline: 'One ecosystem. Zero data silos.',
+                desc: 'Disconnected systems are a hidden tax on your business. We map your entire stack, build the connective tissue, and make sure data flows exactly where it needs to — in real time, reliably, and without duplication.',
+                includes: [
+                    'API development (REST, GraphQL, webhooks)',
+                    'Middleware and event-driven architecture',
+                    'ERP, CRM, and accounting system integrations',
+                    'Real-time data sync and ETL pipelines',
+                    'Error handling, monitoring & retry logic',
+                    'Integration documentation and runbooks'
+                ],
+                ideal: 'Businesses running three or more software tools that don\'t communicate with each other — leading to manual data re-entry and reporting errors.'
+            },
+            {
+                num: '05',
+                title: 'B2B Portals',
+                tagline: 'Your relationships, digitized. Your processes, automated.',
+                desc: 'Purpose-built portals that give your partners, suppliers, and customers a professional, efficient way to interact with your business — reducing manual overhead and eliminating friction on both sides.',
+                includes: [
+                    'Supplier onboarding & management portals',
+                    'Customer self-service and order tracking',
+                    'Partner collaboration & document sharing',
+                    'Role-based access control & SSO',
+                    'Custom dashboards and reporting',
+                    'Mobile-responsive design & performance optimization'
+                ],
+                ideal: 'Businesses with complex external relationships currently managed via email threads and spreadsheets — ready to professionalize the experience.'
+            },
+            {
+                num: '06',
+                title: 'Business Process Automation',
+                tagline: 'Let your systems do the work. Let your team do the thinking.',
+                desc: 'We identify the repetitive, time-consuming tasks that drain your team\'s focus, then engineer smart automations that run reliably in the background — reducing errors and freeing up capacity for high-value work.',
+                includes: [
+                    'Process mapping and bottleneck analysis',
+                    'Workflow automation design and implementation',
+                    'Scheduled tasks, triggers & event-driven processes',
+                    'Automated reporting and dashboard delivery',
+                    'Document generation and approval flows',
+                    'Monitoring, alerting & performance tracking'
+                ],
+                ideal: 'Operations teams spending significant time on manual data entry, approval chains, or recurring reports that could run automatically.'
+            }
+        ];
+
+        const servicesBG = [
+            { num:'01', title:'Персонализиран ERP и внедряване на Odoo', tagline:'Една платформа. Цялата ви фабрика, дигитализирана.',
+              desc:'Изграждаме напълно персонализирани ERP системи за индустриални производители. Чрез интегриране на всеки слой от операцията — инвентар, снабдяване, продажби, счетоводство, управление на производствения етаж и MES — създаваме всеобхватен цифров двойник на вашата фабрика. Резултатът: видимост в реално време, решения, базирани на данни, и пълен оперативен контрол.',
+              includes:['Управление на инвентар и склад — суровини, незавършено производство и готова продукция','Продажби, CRM и работен процес от поръчка до доставка','Счетоводство, проследяване на разходите и финансово отчитане','Управление на производствения етаж, работни заповеди и планиране','MES интеграция — машинни данни, проследяване на OEE и мониторинг в реално време','Спецификация на материалите, маршрутизация и планиране на капацитета','Контрол на качеството и управление на несъответствия','Пълно жизнено цикъл доставяне: обхват, изграждане, въвеждане и поддръжка'],
+              ideal:'Индустриални производители, заменящи фрагментирани системи с единна интегрирана платформа, отразяваща реалните фабрични операции и осигуряваща пълен дигитален контрол.' },
+            { num:'02', title:'Разработка на Уеб Приложения', tagline:'Производителност на първо място. Готови за мащаб. Доставени правилно.',
+              desc:'Изграждаме уеб приложения, издържащи на реални изисквания — не само в демонстрации. От вътрешни инструменти до клиентски платформи с голям трафик — нашата инженерна дейност е насочена към надеждност, поддръжка и скорост.',
+              includes:['Full-stack разработка (React, Vue, Node.js, Python и др.)','Проектиране на API и backend архитектура','Проектиране на база данни и оптимизация на заявки','Удостоверяване на самоличност, оторизация и укрепване на сигурността','Профилиране на производителността и тестване при натоварване','Документация и предаване на вътрешни екипи'],
+              ideal:'Компании, нуждаещи се от персонализиран софтуер вместо готови инструменти, които не отговарят точно на техните работни процеси.' },
+            { num:'03', title:'Облачни и DevOps Решения', tagline:'Доставяйте по-бързо. Чупете по-малко. Мащабирайте без граници.',
+              desc:'Съвременната инфраструктура не трябва да бъде пречка. Проектираме и внедряваме облачни среди, устойчиви, автоматизирани и лесни за управление от вашия екип — така доставките са рутина, не кризис.',
+              includes:['Проектиране на облачна архитектура (AWS, GCP, Azure)','Контейнеризация с Docker и Kubernetes','Проектиране и внедряване на CI/CD тръбопровод','Инфраструктура като код (Terraform, Pulumi)','Настройка на мониторинг, сигнализация и наблюдаемост','Оптимизация на разходите и съответствие с изискванията за сигурност'],
+              ideal:'Инженерни екипи, желаещи да работят по-бързо, без да жертват надеждност или да понасят ненужни разходи за облак.' },
+            { num:'04', title:'Системна Интеграция', tagline:'Една екосистема. Нула информационни силози.',
+              desc:'Несвързаните системи са скрит данък върху вашия бизнес. Картографираме целия ви стек, изграждаме свързващата тъкан и осигуряваме данните да текат точно там, където трябва — в реално време, надеждно и без дублиране.',
+              includes:['Разработка на API (REST, GraphQL, webhooks)','Middleware и архитектура, управлявана от събития','Интеграции на ERP, CRM и счетоводни системи','Синхронизация на данни в реално време и ETL тръбопроводи','Обработка на грешки, мониторинг и логика за повторен опит','Документация за интеграция и наръчници'],
+              ideal:'Бизнеси, използващи три или повече софтуерни инструмента, които не комуникират помежду си — водещо до ръчно въвеждане на данни и грешки в отчетите.' },
+            { num:'05', title:'B2B Портали', tagline:'Вашите взаимоотношения, дигитализирани. Вашите процеси, автоматизирани.',
+              desc:'Специализирани портали, даващи на вашите партньори, доставчици и клиенти професионален, ефективен начин да взаимодействат с вашия бизнес — намалявайки ръчните усилия и елиминирайки триенето от двете страни.',
+              includes:['Портали за въвеждане и управление на доставчици','Самообслужване на клиенти и проследяване на поръчки','Сътрудничество с партньори и споделяне на документи','Контрол на достъпа на базата на роли и SSO','Персонализирани табла и отчитане','Мобилно адаптиран дизайн и оптимизация на производителността'],
+              ideal:'Бизнеси с комплексни външни взаимоотношения, управлявани в момента чрез имейл нишки и електронни таблици — готови да професионализират преживяването.' },
+            { num:'06', title:'Автоматизация на Бизнес Процеси', tagline:'Нека системите вършат работата. Нека екипът ви мисли.',
+              desc:'Идентифицираме повтарящите се, времеемки задачи, изтощаващи фокуса на екипа ви, след което проектираме интелигентни автоматизации, работещи надеждно на заден план — намалявайки грешките и освобождавайки капацитет за работа с висока добавена стойност.',
+              includes:['Картографиране на процеси и анализ на тесни места','Проектиране и внедряване на автоматизация на работни процеси','Планирани задачи, тригери и процеси, управлявани от събития','Автоматично отчитане и доставка на табла','Генериране на документи и потоци за одобрение','Мониторинг, сигнализация и проследяване на производителността'],
+              ideal:'Оперативни екипи, прекарващи значително време в ръчно въвеждане на данни, вериги за одобрения или повтарящи се отчети, които биха могли да вървят автоматично.' }
+        ];
+
+        // ── Service modal open/close ────────────────────────
+        function openServiceModal(index) {
+            const s = (currentLang === 'bg' ? servicesBG : services)[index];
+            document.getElementById('svcModalNum').textContent = s.num;
+            document.getElementById('svcModalTitle').textContent = s.title;
+            document.getElementById('svcModalTagline').textContent = s.tagline;
+            document.getElementById('svcModalDesc').textContent = s.desc;
+            document.getElementById('svcModalIdeal').textContent = s.ideal;
+            const list = document.getElementById('svcModalList');
+            list.innerHTML = s.includes.map(item => `<li>${item}</li>`).join('');
+            document.getElementById('svcModalOverlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSvcModal() {
+            document.getElementById('svcModalOverlay').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function closeSvcModalOnOverlay(e) {
+            if (e.target === document.getElementById('svcModalOverlay')) closeSvcModal();
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeSvcModal();
+        });
+
+        setLang(currentLang);
+    </script>
+
+</body>
+</html>
